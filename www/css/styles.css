@@ -1,0 +1,40 @@
+#map {
+  height: 300px;
+}
+#map_calcular {
+  height: 250px;
+}
+#map_cercano {
+  height: 360px;
+}
+.pequeño {
+  font-size: 12px;
+  text-align: center;
+  padding: 0px;
+  margin: 0px;
+}
+.grande {
+  font-size: 30px;
+}
+.centrado {
+  text-align: center;
+}
+.texto-boton {
+  font-size: 10px;
+  padding-left: 5px;
+}
+.padding {
+  padding-left: 15px;
+}
+.subtitulo {
+  font-size: 17px;
+  text-decoration: underline;
+  color: #666666;
+  text-align: center;
+  padding: 0px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+.verde {
+  color: #4bb543;
+}

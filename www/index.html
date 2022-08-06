@@ -1,0 +1,588 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OBLIGATORIO TDDM - NICOLAS FERNANDEZ </title>
+
+    <script type="module" src="https://unpkg.com/@ionic/core@6.0.2//dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://unpkg.com/@ionic/core@6.0.2//dist/ionic/ionic.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@ionic/core@latest/css/ionic.bundle.css" />
+
+    <script type="module">
+        import { toastController } from 'https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/index.esm.js';
+        window.toastController = toastController;
+
+        import { alertController } from 'https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/index.esm.js';
+        window.alertController = alertController;
+
+        import { menuController } from 'https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/index.esm.js';
+        window.menuController = menuController;
+    </script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin="">
+        </script>
+
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/app.js"></script>
+</head>
+
+<body>
+    <ion-app>
+        <!-- RUTAS ------------------------------------------------------------------>
+        <ion-router>
+            <ion-route url="/" component="pagina-login"></ion-route>
+            <ion-route url="/registro" component="pagina-registro"></ion-route>
+            <ion-route url="/envios" component="pagina-envios"></ion-route>
+            <ion-route url="/enviar" component="pagina-enviar"></ion-route>
+            <ion-route url="/detalle" component="pagina-detalle-envio"></ion-route>
+            <ion-route url="/cerca" component="pagina-cerca"></ion-route>
+            <ion-route url="/calcular" component="pagina-calculadora"></ion-route>
+            <ion-route url="/gastos" component="pagina-gastos"></ion-route>
+            <ion-route url="/ranking" component="pagina-top"></ion-route>
+        </ion-router>
+        <ion-nav root="pagina-login"></ion-nav>
+
+        <!-- MENU ------------------------------------------------------------------>
+        <ion-menu side="start" content-id="main">
+            <ion-header>
+                <ion-toolbar color="success">
+                    <ion-title class="ion-text-center, grande"><strong>THE SILK ROAD</strong></ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding">
+                <ion-list>
+                    <ion-item lines="none">
+                        <img src="img/silkRoad.png">
+                    </ion-item>
+                    <ion-text class="ion-text-center" color="success">
+                        <h3><strong>M E N Ú</strong></h3>
+                    </ion-text>
+                    </ion-item>
+                    <br>
+                    <br>
+                    <ion-item class="item-menu" href="/envios">
+                        <ion-icon name="cube" color="success"></ion-icon>
+                        <ion-label class="padding">MIS ENVÍOS</ion-label>
+                    </ion-item>
+                    <ion-item class="item-menu" href="/enviar">
+                        <ion-icon name="send" color="success"></ion-icon>
+                        <ion-label class="padding">AGREGAR ENVÍO</ion-label>
+                    </ion-item>
+                    <ion-item class="item-menu" href="/calcular">
+                        <ion-icon name="calculator" color="success"></ion-icon>
+                        <ion-label class="padding">CALCULAR DISTANCIA</ion-label>
+                    </ion-item>
+                    <ion-item class="item-menu" href="/gastos">
+                        <ion-icon name="logo-bitcoin" color="success"></ion-icon>
+                        <ion-label class="padding">MIS GASTOS</ion-label>
+                    </ion-item>
+                    <ion-item class="item-menu" href="/cerca">
+                        <ion-icon name="navigate-circle" color="success"></ion-icon>
+                        <ion-label class="padding">CIUDAD CERCANA</ion-label>
+                    </ion-item>
+                    <ion-item class="item-menu" href="/ranking">
+                        <ion-icon name="trophy" color="success"></ion-icon>
+                        <ion-label class="padding">TOP DEPARTAMENTOS</ion-label>
+                    </ion-item>
+                </ion-list>
+            </ion-content>
+        </ion-menu>
+        <div id="main"></div>
+
+        <!-- PAGINA LOGIN ------------------------------------------------------------------>
+        <ion-page class="ion-page" id="pagina-login">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-item>
+                        <ion-thumbnail>
+                            <ion-img src="img/silkRoad.png"></ion-img>
+                        </ion-thumbnail>
+                        <ion-title class="ion-text-center, grande" color="success">THE SILK ROAD</ion-title>
+                    </ion-item>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding">
+                <ion-text color="success">
+                    <h2>Login:</h2>
+                </ion-text>
+                <ion-item>
+                    <ion-label position="floating">Usuario</ion-label>
+                    <ion-input placeholder="Ingrese usuario" id="inp_usuario"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">Contraseña</ion-label>
+                    <ion-input type="password" placeholder="Ingrese contraseña" id="inp_password"></ion-input>
+                </ion-item>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="12">
+                            <ion-button color="success" expand="block" id="btn_login">Login</ion-button>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size="12">
+                            No tiene cuenta? <ion-router-link href="/registro" color="success">Registrarse aquí
+                            </ion-router-link>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+
+            </ion-content>
+            <ion-footer>
+                <ion-toolbar>
+                    <ion-title class="ion-text-center" color="success">TDDM</ion-title>
+                    <p class="pequeño">Analista Programador - Nicolas Fernandez - Febrero 2022</p>
+                </ion-toolbar>
+            </ion-footer>
+        </ion-page>
+
+        <!-- PAGINA REGISTRO ------------------------------------------------------------------>
+        <ion-page class="ion-page" id="pagina-registro">
+            <ion-header>
+                <ion-toolbar color="success">
+                    <ion-title class="ion-text-center" color="light">Registro</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding">
+                <ion-item>
+                    <ion-label position="floating">Usuario</ion-label>
+                    <ion-input placeholder="Ingrese usuario" id="inp_reg_usuario"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">Contraseña</ion-label>
+                    <ion-input type="password" placeholder="Ingrese contraseña" id="inp_reg_password"></ion-input>
+                </ion-item>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="12">
+                            <ion-button color="success" expand="block" id="btn_registro">Regisatrarse</ion-button>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size="12">
+                            Ya tiene cuenta? <ion-router-link href="/" color="success">Ingrese aquí</ion-router-link>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-content>
+            <ion-footer>
+                <ion-toolbar>
+                    <ion-title class="ion-text-center" color="success">TDDM</ion-title>
+                    <p class="pequeño">Analista Programador - Nicolas Fernandez - Febrero 2022</p>
+                </ion-toolbar>
+            </ion-footer>
+        </ion-page>
+
+        <!-- PAGINA LISTADO ENVIOS ------------------------------------------------------------------>
+        <ion-page class="ion-page" id="pagina-envios">
+            <ion-header>
+                <ion-toolbar color="success">
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title class="ion-text-center" color="light">Envíos</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding">
+                <br>
+                <p class="subtitulo">Estos son tus envíos realizados:</p>
+                <ion-list id="list_envios">
+                </ion-list>
+            </ion-content>
+            <ion-footer>
+                <ion-toolbar>
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col size="12" class="ion-text-center">
+                                <ion-button size="small" color="success" disabled href="/envios">
+                                    <ion-icon name="cube-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p> Envios</p>
+                                    </ion-text>
+                                </ion-button>
+                                <ion-button size="small" color="success" class="log_out">
+                                    <ion-icon name="log-out-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p> Salir</p>
+                                    </ion-text>
+                                </ion-button>
+                                <ion-button size="small" color="success" class="cerrar_app">
+                                    <ion-icon name="power-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p>Cerrar</p>
+                                    </ion-text>
+                                </ion-button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-toolbar>
+            </ion-footer>
+        </ion-page>
+
+        <!-- PAGINA CREAR ENVIO ------------------------------------------------------------------>
+        <ion-page class="ion-page" id="pagina-enviar">
+            <ion-header>
+                <ion-toolbar color="success">
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title class="ion-text-center" color="light">Enviar</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding">
+                <br>
+                <p class="subtitulo">Ingresar un nuevo envío:</p>
+                <ion-item>
+                    <ion-label>Ciudad de Origen</ion-label>
+                    <ion-select interface="popover" id="enviar_origen">
+
+                    </ion-select>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Ciudad de Destino</ion-label>
+                    <ion-select interface="popover" id="enviar_destino">
+
+                    </ion-select>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Categoría</ion-label>
+                    <ion-select interface="popover" id="enviar_categoria"></ion-select>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">Peso</ion-label>
+                    <ion-input placeholder="Ingrese el peso en kg" id="enviar_peso"></ion-input>
+                </ion-item>
+                <br>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="12">
+                            <ion-button color="success" expand="block" id="btn_enviar">Enviar</ion-button>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-content>
+            <ion-footer>
+                <ion-toolbar>
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col size="12" class="ion-text-center">
+                                <ion-button size="small" color="success" href="/envios">
+                                    <ion-icon name="cube-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p> Envios</p>
+                                    </ion-text>
+                                </ion-button>
+                                <ion-button size="small" color="success" class="log_out">
+                                    <ion-icon name="log-out-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p> Salir</p>
+                                    </ion-text>
+                                </ion-button>
+                                <ion-button size="small" color="success" class="cerrar_app">
+                                    <ion-icon name="power-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p>Cerrar</p>
+                                    </ion-text>
+                                </ion-button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-toolbar>
+            </ion-footer>
+        </ion-page>
+
+        <!-- PAGINA DETALLE DE ENVIO ------------------------------------------------------------------>
+        <ion-page class="ion-page" id="pagina-detalle-envio">
+            <ion-header>
+                <ion-toolbar color="success">
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title class="ion-text-center" color="light">Detalle</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding">
+                <ion-card>
+                    <ion-card-header>
+                        <ion-card-subtitle id="det_id"></ion-card-subtitle>
+                        <ion-card-title id="det_ciudadOrigen" color="success"></ion-card-title>
+                        <ion-card-title id="det_ciudadDestino" color="success"></ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <p id="det_peso"></p>
+                        <p id="det_distancia"></p>
+                        <p id="det_categoria"></p>
+                        <ion-card-subtitle id="det_precio"></ion-card-subtitle>
+                        <ion-item-divider></ion-item-divider>
+                        <div id="map"></div>
+                    </ion-card-content>
+                </ion-card>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="12">
+                            <ion-button color="success" expand="block" id="btn_compartir">Compartir</ion-button>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size="12">
+                            <ion-button color="danger" expand="block" id="btn_det_eliminar">Eliminar</ion-button>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-content>
+            <ion-footer>
+                <ion-toolbar>
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col size="12" class="ion-text-center">
+                                <ion-button size="small" color="success" href="/envios">
+                                    <ion-icon name="cube-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p> Envios</p>
+                                    </ion-text>
+                                </ion-button>
+                                <ion-button size="small" color="success" class="log_out">
+                                    <ion-icon name="log-out-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p> Salir</p>
+                                    </ion-text>
+                                </ion-button>
+                                <ion-button size="small" color="success" class="cerrar_app">
+                                    <ion-icon name="power-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p>Cerrar</p>
+                                    </ion-text>
+                                </ion-button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-toolbar>
+            </ion-footer>
+        </ion-page>
+
+        <!-- PAGINA CALCULADORA ------------------------------------------------------------------>
+        <ion-page class="ion-page" id="pagina-calculadora">
+            <ion-header>
+                <ion-toolbar color="success">
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title class="ion-text-center" color="light">Distancia</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding">
+                <br>
+                <p class="subtitulo">Calcule la distancia entre las ciudades:</p>
+                <ion-item>
+                    <ion-label>Origen</ion-label>
+                    <ion-select interface="popover" id="calc_origen">
+
+                    </ion-select>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Destino</ion-label>
+                    <ion-select interface="popover" id="calc_destino">
+                    </ion-select>
+                </ion-item>
+                <br>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="12">
+                            <ion-button color="success" expand="block" id="btn_calc">Calcular</ion-button>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ion-card id="card_calcular"></ion-card>
+            </ion-content>
+            <ion-footer>
+                <ion-toolbar>
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col size="12" class="ion-text-center">
+                                <ion-button size="small" color="success" href="/envios">
+                                    <ion-icon name="cube-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p> Envios</p>
+                                    </ion-text>
+                                </ion-button>
+                                <ion-button size="small" color="success" class="log_out">
+                                    <ion-icon name="log-out-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p> Salir</p>
+                                    </ion-text>
+                                </ion-button>
+                                <ion-button size="small" color="success" class="cerrar_app">
+                                    <ion-icon name="power-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p>Cerrar</p>
+                                    </ion-text>
+                                </ion-button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-toolbar>
+            </ion-footer>
+        </ion-page>
+
+
+        <!-- PAGINA GASTOS USUARIO ------------------------------------------------------------------>
+        <ion-page class="ion-page" id="pagina-gastos">
+            <ion-header>
+                <ion-toolbar color="success">
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title class="ion-text-center" color="light">Gastos</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding">
+                <ion-card>
+                    <ion-card-header>
+                        <ion-card-subtitle id="gasto_id"></ion-card-subtitle>
+                        <br>
+                        <ion-card-title class="grande" id="gasto_precioTotal" color="success">Gasto: $</ion-card-title>
+                        <p id="gasto_cantidad"></p>
+                    </ion-card-header>
+                </ion-card>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="12">
+                            <ion-button color="success" expand="block" href="/enviar">REALIZAR UN ENVIO</ion-button>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-content>
+            <ion-footer>
+                <ion-toolbar>
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col size="12" class="ion-text-center">
+                                <ion-button size="small" color="success" href="/envios">
+                                    <ion-icon name="cube-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p> Envios</p>
+                                    </ion-text>
+                                </ion-button>
+                                <ion-button size="small" color="success" class="log_out">
+                                    <ion-icon name="log-out-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p> Salir</p>
+                                    </ion-text>
+                                </ion-button>
+                                <ion-button size="small" color="success" class="cerrar_app">
+                                    <ion-icon name="power-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p>Cerrar</p>
+                                    </ion-text>
+                                </ion-button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-toolbar>
+            </ion-footer>
+        </ion-page>
+
+
+        <!-- PAGINA CIUDAD CERCANA ------------------------------------------------------------------>
+        <ion-page class="ion-page" id="pagina-cerca">
+            <ion-header>
+                <ion-toolbar color="success">
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title class="ion-text-center" color="light">Cerca</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding">
+                <br>
+                <p class="subtitulo">Información de la ciudad más cercana:</p>
+                <br>
+                <ion-card id="card_cercana"></ion-card>
+            </ion-content>
+            <ion-footer>
+                <ion-toolbar>
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col size="12" class="ion-text-center">
+                                <ion-button size="small" color="success" href="/envios">
+                                    <ion-icon name="cube-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p> Envios</p>
+                                    </ion-text>
+                                </ion-button>
+                                <ion-button size="small" color="success" class="log_out">
+                                    <ion-icon name="log-out-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p> Salir</p>
+                                    </ion-text>
+                                </ion-button>
+                                <ion-button size="small" color="success" class="cerrar_app">
+                                    <ion-icon name="power-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p>Cerrar</p>
+                                    </ion-text>
+                                </ion-button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-toolbar>
+            </ion-footer>
+        </ion-page>
+
+        <!-- PAGINA TOP DEPARTAMENTOS ------------------------------------------------------------------>
+        <ion-page class="ion-page" id="pagina-top">
+            <ion-header>
+                <ion-toolbar color="success">
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title class="ion-text-center" color="light">Ranking</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding">
+                <br>
+                <p class="subtitulo">Top 5 departamentos con más envíos:</p>
+                <br>
+                <ion-card id="card_top"></ion-card>
+            </ion-content>
+            <ion-footer>
+                <ion-toolbar>
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col size="12" class="ion-text-center">
+                                <ion-button size="small" color="success" href="/envios">
+                                    <ion-icon name="cube-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p> Envios</p>
+                                    </ion-text>
+                                </ion-button>
+                                <ion-button size="small" color="success" class="log_out">
+                                    <ion-icon name="log-out-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p> Salir</p>
+                                    </ion-text>
+                                </ion-button>
+                                <ion-button size="small" color="success" class="cerrar_app">
+                                    <ion-icon name="power-outline"></ion-icon>
+                                    <ion-text class="texto-boton">
+                                        <p>Cerrar</p>
+                                    </ion-text>
+                                </ion-button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-toolbar>
+            </ion-footer>
+        </ion-page>
+    </ion-app>
+</body>
+
+</html
