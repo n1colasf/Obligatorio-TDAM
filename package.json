@@ -17,6 +17,6 @@
     "@capacitor/network": "^1.0.7"
   },
   "devDependencies": {
-    "@capacitor/cli": "^3.4.1"
+    "@capacitor/cli": "^8.2.0"
   }
 }
